@@ -11,7 +11,7 @@
 1. Clonar el repositorio:
 
    ```bash
-   git clone https://github.com/tuusuario/inventory_system.git
+   git clone https://github.com/EECG1986/inventory_system.git
    cd inventory_system
 
 2. Crear y activar el entorno virtual:
