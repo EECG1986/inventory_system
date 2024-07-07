@@ -1,0 +1,151 @@
+# Inventory Management System
+
+## Requisitos
+
+- Python 3.6+
+- Django 3.0+
+- Django REST Framework
+
+## Instalación
+
+1. Clonar el repositorio:
+
+   ```bash
+   git clone https://github.com/tuusuario/inventory_system.git
+   cd inventory_system
+
+2. Crear y activar el entorno virtual:
+python -m venv venv
+source venv/bin/activate  # En Windows: venv\Scripts\activate
+
+3. Instalar las dependencias:
+pip install -r requirements.txt
+
+4. Aplicar las migraciones:
+python manage.py makemigrations
+python manage.py migrate
+
+5. Crear un superusuario:
+python manage.py createsuperuser
+
+6. Ejecutar el servidor de desarrollo:
+   python manage.py runserver
+
+# Uso
+
+Admin: http://127.0.0.1:8000/admin/
+API: http://127.0.0.1:8000/api/
+
+Estructura del Proyecto
+
+* inventarios/: Aplicación principal.
+* templates/: Directorio de templates.
+* inventarios/serializers.py: Serializadores para DRF.
+* inventarios/views.py: Vistas para DRF.
+* inventarios/urls.py: Rutas de la API.
+
+# Definición de los modelos en inventarios/models.py:
+
+from django.db import models
+
+class Supplier(models.Model):
+    name = models.CharField(max_length=255)
+    contact_info = models.TextField()
+
+    def __str__(self):
+        return self.name
+
+class Product(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    stock = models.IntegerField()
+    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+class Order(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+    order_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.product.name} - {self.quantity}"
+
+# serializador: inventory/serialiazers.py
+
+from rest_framework import serializers
+from .models import Supplier, Product, Order
+
+class SupplierSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Supplier
+        fields = '__all__'
+
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = '__all__'
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = '__all__'
+
+# Vistas: inventory/ views.py
+
+from rest_framework import viewsets
+from .models import Supplier, Product, Order
+from .serializers import SupplierSerializer, ProductSerializer, OrderSerializer
+
+class SupplierViewSet(viewsets.ModelViewSet):
+    queryset = Supplier.objects.all()
+    serializer_class = SupplierSerializer
+
+class ProductViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+class OrderViewSet(viewsets.ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+
+# Urls: inventory/urls.py
+
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import SupplierViewSet, ProductViewSet, OrderViewSet
+
+router = DefaultRouter()
+router.register(r'suppliers', SupplierViewSet)
+router.register(r'products', ProductViewSet)
+router.register(r'orders', OrderViewSet)
+
+urlpatterns = [
+    path('', include(router.urls)),
+]
+
+# urls: inventory_system/ urls.py
+
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/', include('inventory.urls')),
+]
+
+# Probar los Endpoints de la API
+
+Utiliza tu navegador o una herramienta como Postman para realizar solicitudes a los endpoints de la API.
+
+    Listar proveedores: http://127.0.0.1:8000/api/suppliers/
+    Listar productos: http://127.0.0.1:8000/api/products/
+    Listar pedidos: http://127.0.0.1:8000/api/orders/
+
+** Verificar y Depurar
+
+Si encuentras algún error, revisa los mensajes de error en la consola y corrige el código según sea necesario. Asegúrate de que todas las migraciones se hayan aplicado correctamente y de que los modelos estén bien definidos.
+

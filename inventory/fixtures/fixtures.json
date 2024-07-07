@@ -1,0 +1,67 @@
+[
+    {
+        "model": "inventory.supplier",
+        "pk": 1,
+        "fields": {
+            "name": "Proveedor 1",
+            "contact": "Contacto Proveedor 1",
+            "email": "contacto@proveedor1.com",
+            "phone": "123-456-7890"
+        }
+    },
+    {
+        "model": "inventory.product",
+        "pk": 1,
+        "fields": {
+            "name": "Laptop",
+            "description": "Portátil Dell",
+            "price": 750.00,
+            "stock": 10,
+            "supplier": 1
+        }
+    },
+    {
+        "model": "inventory.product",
+        "pk": 2,
+        "fields": {
+            "name": "Mouse",
+            "description": "Mouse óptico",
+            "price": 15.00,
+            "stock": 50,
+            "supplier": 1
+        }
+    },
+    {
+        "model": "inventory.product",
+        "pk": 3,
+        "fields": {
+            "name": "Teclado",
+            "description": "Teclado mecánico",
+            "price": 45.00,
+            "stock": 30,
+            "supplier": 1
+        }
+    },
+    {
+        "model": "inventory.product",
+        "pk": 4,
+        "fields": {
+            "name": "Monitor",
+            "description": "Monitor LED",
+            "price": 150.00,
+            "stock": 20,
+            "supplier": 1
+        }
+    },
+    {
+        "model": "inventory.product",
+        "pk": 5,
+        "fields": {
+            "name": "Impresora",
+            "description": "Impresora multifunción",
+            "price": 120.00,
+            "stock": 10,
+            "supplier": 1
+        }
+    }
+]
